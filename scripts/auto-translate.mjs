@@ -63,6 +63,11 @@ const val = (f) => {
   const i = args.indexOf(f);
   return i >= 0 ? args[i + 1] : undefined;
 };
+// Повне вимкнення автоперекладу: TRANSLATE_DISABLED=1 (або --disabled).
+if (process.env.TRANSLATE_DISABLED === '1' || has('--disabled')) {
+  console.log('TRANSLATE_DISABLED=1 – авто-переклад вимкнено, вихід.');
+  process.exit(0);
+}
 const PROVIDER =
   val('--provider') || process.env.TRANSLATE_PROVIDER || 'anthropic';
 const DEFAULT_MODEL = {

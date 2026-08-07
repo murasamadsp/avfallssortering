@@ -153,6 +153,10 @@ GitHub Secrets (`ANTHROPIC_API_KEY`, `DEEPSEEK_API_KEY`,
 - **Health-check:** `.github/workflows/translate-health.yml` раз на тиждень і
   вручну перевіряє, що вибрані provider/model ще живі. Якщо модель видалили з
   API, помилка пояснює, які GitHub Variables/Secrets оновити.
+- **Вимкнення:** щоб повністю вимкнути автопереклад без правок у коді, задай
+  GitHub Variable `TRANSLATE_DISABLED=1` (repo → Settings → Secrets and
+  variables → Actions → Variables). Крок перекладу завершується миттєво,
+  deploy іде далі. Локально — така ж env-змінна або прапорець `--disabled`.
 
 ### Структурний референс
 

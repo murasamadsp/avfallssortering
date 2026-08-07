@@ -50,6 +50,7 @@ jobs:
       - name: Auto-translate changed fields
         if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
         env:
+          TRANSLATE_DISABLED: ${{ vars.TRANSLATE_DISABLED }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           GOOGLE_TRANSLATE_API_KEY: ${{ secrets.GOOGLE_TRANSLATE_API_KEY }}
@@ -60,6 +61,13 @@ jobs:
           TRANSLATE_TIMEOUT_MS: ${{ vars.TRANSLATE_TIMEOUT_MS || '60000' }}
           TRANSLATE_RETRIES: ${{ vars.TRANSLATE_RETRIES || '2' }}
         run: |
+          # Повне вимкнення автоперекладу через GitHub Variable:
+          # repo → Settings → Secrets and variables → Actions → Variables.
+          # TRANSLATE_DISABLED=1 → API не запускається, деплой іде далі.
+          if [ "$TRANSLATE_DISABLED" = "1" ]; then
+            echo "TRANSLATE_DISABLED=1 – auto-translate вимкнено, пропускаю."
+            exit 0
+          fi
           # Diff від останнього УСПІШНОГО перекладу (останній bot-коміт), а не
           # лише від попереднього push. Бот комітить тільки після успіху, тому
           # якщо прогін упав (кредити/API), база лишається і НАСТУПНИЙ прогін
